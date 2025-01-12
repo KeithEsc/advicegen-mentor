@@ -1,0 +1,69 @@
+---
+import "../styles/style.css"; // Adjust the path if necessary
+import iconDice from "../assets/icon-dice.svg";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | Advice generator app</title>
+  </head>
+  <body>
+    <div class="container">
+      <main>
+        <div class="number">
+          Advice #<!-- Advice ID goes here -->
+        </div>
+        <div class="quote"></div>
+        <div class="break-container">
+          <div class="break"></div>
+          <div class="symbol">"</div>
+          <div class="break"></div>
+        </div>
+        <button class="button">
+          <a href=""
+            ><img src={iconDice.src} alt="dice icon" class="button-icon" /></a
+          >
+        </button>
+      </main>
+    </div>
+  </body>
+</html>
+<script>
+  const fetchAdvice = async () => {
+    const response = await fetch("https://api.adviceslip.com/advice");
+    const data = await response.json();
+    return data.slip;
+  };
+
+  const updateAdvice = async () => {
+    const advice = await fetchAdvice();
+    const quoteElement = document.querySelector(".quote");
+    const numberElement = document.querySelector(".number");
+
+    if (quoteElement && numberElement) {
+      quoteElement.textContent = advice.advice;
+      numberElement.textContent = `Advice #${advice.id}`;
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    updateAdvice();
+  });
+</script>
